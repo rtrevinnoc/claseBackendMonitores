@@ -1,0 +1,11 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "connectionStrings": {
+    "defaultConnection": "Data Source=.;Initial Catalog=ClaseBackend;Integrated Security=True;trusted_connection=false;Encrypt=False;User ID=sa;Password=P4ssw0rd1;"
+  }
+}

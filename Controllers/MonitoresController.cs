@@ -7,13 +7,45 @@ namespace Monitores.Controllers
     [Route("api/monitores")]
     public class MonitoresController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<List<EMonitor>> Get()
+        private ApplicationDbContext db;
+
+        public MonitoresController(ApplicationDbContext dbContext)
         {
-            return new List<EMonitor>() {
-                new EMonitor() { Id = 1, Nombre = "Monitor 1" },
-                new EMonitor() { Id = 2, Nombre = "Monitor 2" }
-            };
+            db = dbContext;
+        }
+
+        [HttpGet]
+        public ActionResult<List<EMonitor>> Get() => db.Monitors.ToList();
+
+
+        [HttpPost]
+        public ActionResult<EMonitor> Post(EMonitor monitor)
+        {
+            db.Monitors.Add(monitor);
+            db.SaveChanges();
+
+            return monitor;
+        }
+
+        [HttpDelete]
+        public ActionResult<EMonitor> Delete(Guid id)
+        {
+            EMonitor monitor = db.Monitors.Find(id);
+            db.Monitors.Remove(monitor);
+            db.SaveChanges();
+
+            return monitor;
+        }
+
+        [HttpPut]
+        public ActionResult<EMonitor> Put(EMonitor updatedMonitor)
+        {
+            var oldMonitor = db.Monitors.Find(updatedMonitor.EMonitorId);
+
+            db.Monitors.Entry(oldMonitor).CurrentValues.SetValues(updatedMonitor);
+            db.SaveChanges();
+
+            return updatedMonitor;
         }
     }
 }

@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+
 namespace Monitores
 {
     public class Startup
@@ -11,10 +14,16 @@ namespace Monitores
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(x =>
+            {
+                x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+
+            services.AddDbContext<Monitores.ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

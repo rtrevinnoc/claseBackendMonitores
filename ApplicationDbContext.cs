@@ -9,7 +9,8 @@ namespace Monitores
         {
         }
 
-        public DbSet<EMonitor> Monitores { get; set; }
+        public DbSet<EMonitor> Monitors { get; set; }
+        public DbSet<Room> Rooms { get; set; }
 
     }
 }
