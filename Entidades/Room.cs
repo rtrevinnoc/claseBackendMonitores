@@ -11,6 +11,6 @@ namespace Monitores.Entidades
 
         public float length { get; set; }
 
-        public List<EMonitor> monitors { get; set; }
+        public virtual ICollection<EMonitor> EMonitorIds { get; set; }
     }
 }
