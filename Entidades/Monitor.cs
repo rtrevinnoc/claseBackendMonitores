@@ -16,6 +16,8 @@ namespace Monitores.Entidades
         public Brand brand { get; set; }
 
         public float price { get; set; }
+
+        public Room Room { get; set; }
     }
 
     public enum DisplayType

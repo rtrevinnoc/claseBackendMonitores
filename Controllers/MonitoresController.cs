@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Monitores.Entidades;
 
 namespace Monitores.Controllers
@@ -15,7 +16,7 @@ namespace Monitores.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<EMonitor>> Get() => db.Monitors.ToList();
+        public ActionResult<List<EMonitor>> Get() => db.Monitors.Include(r => r.Room).ToList();
 
 
         [HttpPost]
@@ -46,6 +47,30 @@ namespace Monitores.Controllers
             db.SaveChanges();
 
             return updatedMonitor;
+        }
+
+        public class addToRoomResource
+        {
+            public Guid roomId { get; set; }
+            public Guid monitorId { get; set; }
+        }
+
+        [Route("addToRoom")]
+        [HttpPost]
+        public ActionResult<EMonitor> AddToRoom([FromBody] addToRoomResource addToRoomResource)
+        {
+            EMonitor monitor = db.Monitors.Find(addToRoomResource.monitorId);
+            Room room = db.Rooms.Find(addToRoomResource.roomId);
+
+            room.monitors.Add(monitor);
+            monitor.Room = room;
+
+            db.Monitors.Entry(monitor).Reference(e => e.Room).IsModified = true;
+            db.Rooms.Entry(room).Collection(e => e.monitors).IsModified = true;
+
+            db.SaveChanges();
+
+            return monitor;
         }
     }
 }

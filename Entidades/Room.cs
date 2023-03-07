@@ -11,6 +11,11 @@ namespace Monitores.Entidades
 
         public float length { get; set; }
 
-        public virtual ICollection<EMonitor> EMonitorIds { get; set; }
+        public ICollection<EMonitor> monitors { get; set; }
+
+        public Room()
+        {
+            this.monitors = new List<EMonitor>();
+        }
     }
 }
